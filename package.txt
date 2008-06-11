@@ -1,0 +1,11 @@
+#This is a file that is included with the flext Makefiles
+#when you run the build script
+
+NAME=np_lightstone
+SRCS=./src/np_lightstone.flext.cpp 
+CFLAGS=-I/usr/include -I/usr/local/include -DUSE_LIBHID
+ifdef SHARED
+	LIBS += -llightstone.0.1 -framework IOKit
+else
+	LIBS += -framework IOKit -L/usr/local/lib -llightstone
+endif
