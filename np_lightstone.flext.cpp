@@ -12,7 +12,7 @@
 
 // include flext header
 #include <flext.h>
-#include <lightstone.h>
+#include "lightstone/lightstone.h"
 
 // check for appropriate flext version
 #if !defined(FLEXT_VERSION) || (FLEXT_VERSION < 400)
@@ -30,7 +30,7 @@ class np_lightstone:
 public:
 	// constructor
 	np_lightstone() :
-	mLightstone(NULL)
+	mLightstone(lightstone_create())
 	{
 		AddInAnything("Command Input (Bang for Update)");
 		AddOutBang("Bangs on successful connection/command");
@@ -45,10 +45,11 @@ public:
 		{
 			close();
 		}
+		lightstone_delete(mLightstone);
 	}
 	
 protected:
-	lightstone mLightstone;
+	lightstone* mLightstone;
 	lightstone_info mLightstoneInfo;
 
 	void lightstone_anything(const t_symbol *msg,int argc,t_atom *argv)
@@ -56,19 +57,19 @@ protected:
 		if(!strcmp(msg->s_name, "open"))
 		{
 			int ret;
-			if(mLightstone)
+			if(mLightstone->_is_open)
 			{
 				lightstone_close(mLightstone);
 			}
 			if(argc == 1)
 			{
 				post("Opening %d", GetInt(argv[0]));
-				ret = lightstone_open(&mLightstone, GetInt(argv[0]));
+				ret = lightstone_open(mLightstone, GetInt(argv[0]));
 			}
 			else
 			{
 				post("Opening default");
-				ret = lightstone_open(&mLightstone, 0);
+				ret = lightstone_open(mLightstone, 0);
 			}
 			if(ret >= 0)
 			{
@@ -81,7 +82,7 @@ protected:
 		}
 		else if (!strcmp(msg->s_name, "count"))
 		{
-			post("lightstones Connected to System: %d", lightstone_get_count());
+			post("lightstones Connected to System: %d", lightstone_get_count(mLightstone));
 			ToOutBang(0);
 		}
 		else if (!strcmp(msg->s_name, "close"))
