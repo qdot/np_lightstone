@@ -1,4 +1,4 @@
-#N canvas 738 323 360 273 10;
+#N canvas 738 323 361 311 10;
 #X obj 36 136 np_lightstone;
 #X floatatom 73 176 5 0 0 0 - - -;
 #X floatatom 111 157 5 0 0 0 - - -;
@@ -24,6 +24,9 @@
 #X text 107 176 HRV;
 #X text 144 157 GSR;
 #X text 70 71 Bang when open to run single I/O in main thread;
+#X text 1 265 Note: On OS X \, you need to install the LightstoneNullDriver.kext
+in order for the Lightstone to work. This can be retrieved from http://is.gd/5GjW7
+;
 #X connect 0 0 16 0;
 #X connect 0 1 1 0;
 #X connect 0 2 2 0;
