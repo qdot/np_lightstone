@@ -26,50 +26,81 @@ class np_lightstone:
 {
 	// obligatory flext header (class name,base class name)
 	FLEXT_HEADER(np_lightstone,flext_base)
- 
+
+	// Same as boost ScopedMutex, just using flext's mutex class.
+	class ScopedMutex
+	{
+		ScopedMutex() {}
+
+	public:
+		ScopedMutex(ThrMutex& tm)
+		{
+			m = &tm;
+			m->Lock();
+		}
+
+		~ScopedMutex()
+		{
+			m->Unlock();
+		}
+	private:
+		ThrMutex* m;
+	};
+
 public:
 	// constructor
 	np_lightstone() :
-	mLightstone(lightstone_create())
+		m_lightstoneDevice(lightstone_create()),
+		m_shouldRun(false)
 	{
 		AddInAnything("Command Input (Bang for Update)");
 		AddOutBang("Bangs on successful connection/command");
 		AddOutFloat("Heart Rate");
 		AddOutFloat("Skin Conductance");
-		FLEXT_ADDMETHOD(0, lightstone_anything);
+		FLEXT_ADDMETHOD_(0, "close", close);
+		FLEXT_ADDMETHOD_(0, "start", start);
+		FLEXT_ADDMETHOD_(0, "stop", stop);
+		FLEXT_ADDMETHOD_(0, "count", count);
+		FLEXT_ADDMETHOD(0, anything);
+
+		post("Lightstone External v1.0.0");
+		post("by Nonpolynomial Labs (http://www.nonpolynomial.com)");
+		post("Updates at http://www.github.com/qdot/np_lightstone");
+		post("Compiled on " __DATE__ " " __TIME__);
 	} 
 
 	virtual ~np_lightstone()
 	{
-		if(mLightstone)
+		if(m_lightstoneDevice->_is_open)
 		{
 			close();
 		}
-		lightstone_delete(mLightstone);
+		lightstone_delete(m_lightstoneDevice);
 	}
 	
 protected:
-	lightstone* mLightstone;
-	lightstone_info mLightstoneInfo;
-
-	void lightstone_anything(const t_symbol *msg,int argc,t_atom *argv)
+	lightstone* m_lightstoneDevice;
+	lightstone_info m_lightstoneDeviceInfo;
+	bool m_shouldRun;
+	
+	void anything(const t_symbol *msg,int argc,t_atom *argv)
 	{				
 		if(!strcmp(msg->s_name, "open"))
 		{
 			int ret;
-			if(mLightstone->_is_open)
+			if(m_lightstoneDevice->_is_open)
 			{
-				lightstone_close(mLightstone);
+				close();
 			}
 			if(argc == 1)
 			{
-				post("Opening %d", GetInt(argv[0]));
-				ret = lightstone_open(mLightstone, GetInt(argv[0]));
+				post("np_lightstone - Opening %d", GetInt(argv[0]));
+				ret = lightstone_open(m_lightstoneDevice, GetInt(argv[0]));
 			}
 			else
 			{
-				post("Opening default");
-				ret = lightstone_open(mLightstone, 0);
+				post("np_lightstone - Opening first device");
+				ret = lightstone_open(m_lightstoneDevice, 0);
 			}
 			if(ret >= 0)
 			{
@@ -77,50 +108,92 @@ protected:
 			}
 			else
 			{
-				post("Cannot connect to lightstone");
+				post("np_lightstone - Cannot connect to lightstone");
 			}
+			return;
 		}
-		else if (!strcmp(msg->s_name, "count"))
+		if (!strcmp(msg->s_name, "bang"))
 		{
-			post("lightstones Connected to System: %d", lightstone_get_count(mLightstone));
-			ToOutBang(0);
+			poll();
+			return;
 		}
-		else if (!strcmp(msg->s_name, "close"))
-		{
-			close();
-			ToOutBang(0);
-		}
-		else if (!strcmp(msg->s_name, "bang"))
-		{
-			if(mLightstone)
-			{
-				mLightstoneInfo = lightstone_get_info(mLightstone);
-				ToOutBang(0);
-				ToOutFloat(1, mLightstoneInfo.hrv);
-				ToOutFloat(2, mLightstoneInfo.scl);
-			}
-			else
-			{
-				post("Not connected to lightstone");
-			}
-		}
-		else 
-		{
-			post("Not a valid np_lightstone message: %s", msg->s_name);
-		}
+		post("np_lightstone - Not a valid np_lightstone message: %s", msg->s_name);
 	}
 
+	void count()
+	{
+		post("np_lightstone - lightstones Connected to System: %d", lightstone_get_count(m_lightstoneDevice));
+		ToOutBang(0);
+	}
+	
 	void close()
 	{
-		if(mLightstone)
+		if(!m_lightstoneDevice->_is_open)
 		{
-			lightstone_close(mLightstone);
-			mLightstone = NULL;
+			post("np_lightstone - No device currently open");
+			return;
 		}
+		if(m_shouldRun)
+		{
+			stop();
+		}
+		lightstone_close(m_lightstoneDevice);
+		post("np_lightstone - Device closed");
 	}
 
+	
+	void stop()
+	{
+		if(!m_shouldRun)
+		{
+			post("np_lightstone - No I/O thread currently running");
+			return;
+		}
+		m_shouldRun = false;
+	}
+
+	void start()
+	{
+		if(!m_lightstoneDevice->_is_open)
+		{
+			Lock();
+			post("np_lightstone - No device currently open");
+			Unlock();
+			return;
+		}
+		m_shouldRun = true;
+		while(m_shouldRun)
+		{
+			poll();
+			//We can sleep for a while here. The lightstone doesn't move at anywhere near 100hz. More like 20-30hz.
+			Sleep(.01);
+		}
+		Lock();
+		post("np_lightstone - Exiting thread loop");
+		Unlock();
+	}
+
+	void poll()
+	{
+		if(!m_lightstoneDevice->_is_open)
+		{
+			post("np_lightstone - No device currently open");
+			return;
+		}
+		m_lightstoneDeviceInfo = lightstone_get_info(m_lightstoneDevice);
+		Lock();
+		ToOutBang(0);
+		ToOutFloat(1, m_lightstoneDeviceInfo.hrv);
+		ToOutFloat(2, m_lightstoneDeviceInfo.scl);
+		Unlock();
+	}
+	
 private:
-	FLEXT_CALLBACK_A(lightstone_anything)
+	FLEXT_CALLBACK_A(anything)
+	FLEXT_THREAD(start)
+	FLEXT_CALLBACK(count)
+	FLEXT_CALLBACK(close)
+	FLEXT_CALLBACK(stop)
 };
 
 FLEXT_NEW("np_lightstone", np_lightstone)
