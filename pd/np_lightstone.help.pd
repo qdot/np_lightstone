@@ -1,0 +1,35 @@
+#N canvas 738 323 360 273 10;
+#X obj 36 136 np_lightstone;
+#X floatatom 73 176 5 0 0 0 - - -;
+#X floatatom 111 157 5 0 0 0 - - -;
+#X msg 62 92 start;
+#X msg 76 113 stop;
+#X msg 25 28 open;
+#X msg 8 7 count;
+#X msg 40 51 close;
+#X obj 53 73 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 1 211 lightstone external v1.0.0 by Nonpolynomial Labs http://www.nonpolynomial.com
+;
+#X text 1 237 External repository at http://www.github.com/qdot/np_lightstone
+;
+#X text 45 7 Print number of devices connected to system;
+#X text 57 27 Open first device;
+#X text 100 92 Start I/O Thread;
+#X text 110 114 Stop I/O Thread;
+#X text 78 51 Close Device;
+#X obj 36 194 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 53 193 Bangs on success;
+#X text 107 176 HRV;
+#X text 144 157 GSR;
+#X text 70 71 Bang when open to run single I/O in main thread;
+#X connect 0 0 16 0;
+#X connect 0 1 1 0;
+#X connect 0 2 2 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X connect 8 0 0 0;
