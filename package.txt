@@ -5,4 +5,4 @@ NAME=np_lightstone
 BUILDTYPE=multi
 SRCS=np_lightstone.flext.cpp 
 CFLAGS=-I../library/usr_darwin_10.5_x86/include
-LIBS+=-llightstone
+LIBS+=../library/usr_darwin_10.5_x86/lib/liblightstone.a ../library/usr_darwin_10.5_x86/lib/libusb-1.0.a  -framework IOKit -framework CoreFoundation
