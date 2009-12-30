@@ -1,6 +1,8 @@
 #This is a file that is included with the flext Makefiles
 #when you run the build script
 
+#if you're compiling this yourself, replace the information in -I/-L with the locations of your libraries
+
 NAME=np_lightstone
 BUILDTYPE=multi
 SRCS=np_lightstone.flext.cpp 
