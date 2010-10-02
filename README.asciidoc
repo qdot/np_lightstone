@@ -11,15 +11,9 @@ information from the Journey to Wild Divine Lightstone USB Widget.
 
 == Package Information ==
 
-Source available at http://www.github.com/qdot/np_lightstone
+Source repo @ http://www.github.com/qdot/np_lightstone
 
-All NP Labs Externals available at http://www.nonpolynomial.com/externals
-
-Portability of source between Max and Pd is available thanks to flext
-
-- Max: http://www.cycling74.com
-- Pd: http://www.puredata.info
-- Flext: http://puredata.info/Members/thomas/flext
+All NP Labs Externals @ http://www.nonpolynomial.com/externals
 
 == Source Requirements ==
 
