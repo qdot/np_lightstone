@@ -1,15 +1,19 @@
 = np_lightstone Max/MSP and Pd External =
 
 by Kyle Machulis <kyle@nonpolynomial.com>
-Nonpolynomial Labs - http://www.nonpolynomial.com
 
-- Source available at http://www.github.com/qdot/np_lightstone
-- All NP Labs Externals available at http://www.nonpolynomial.com/externals
+Nonpolynomial Labs - http://www.nonpolynomial.com
 
 == Description ==
 
 np_lightstone is an external for either Max/MSP or Puredata to receive
 information from the Journey to Wild Divine Lightstone USB Widget.
+
+== Package Information ==
+
+Source available at http://www.github.com/qdot/np_lightstone
+
+All NP Labs Externals available at http://www.nonpolynomial.com/externals
 
 Portability of source between Max and Pd is available thanks to flext
 
