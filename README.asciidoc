@@ -23,9 +23,22 @@ Portability of source between Max and Pd is available thanks to flext
 
 == Source Requirements ==
 
-np_lightstone uses the liblightstone library for communicating with the Lightstone.
+=== Flext ===
 
-http://www.github.com/qdot/liblightstone
+Flext is a C++ layer that allows for the same source to compile to
+both Pd and Max externals. NP Labs Externals use this to make code
+build quickly and easily for as many platforms as possible.
+
+More project info @ http://puredata.info/Members/thomas/flext
+
+=== np_lightstone ===
+
+np_lightstone uses the liblightstone library for communicating with
+the Lightstone.
+
+More project info @ http://liblightstone.nonpolynomial.com
+
+Source repo @ http://www.github.com/qdot/liblightstone
 
 == Installation ==
 
