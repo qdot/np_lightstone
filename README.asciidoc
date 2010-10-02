@@ -1,0 +1,104 @@
+= np_lightstone Max/MSP and Pd External =
+
+by Kyle Machulis <kyle@nonpolynomial.com>
+Nonpolynomial Labs - http://www.nonpolynomial.com
+
+- Source available at http://www.github.com/qdot/np_lightstone
+- All NP Labs Externals available at http://www.nonpolynomial.com/externals
+
+== Description ==
+
+np_lightstone is an external for either Max/MSP or Puredata to receive
+information from the Journey to Wild Divine Lightstone USB Widget.
+
+Portability of source between Max and Pd is available thanks to flext
+
+- Max: http://www.cycling74.com
+- Pd: http://www.puredata.info
+- Flext: http://puredata.info/Members/thomas/flext
+
+== Source Requirements ==
+
+np_lightstone uses the liblightstone library for communicating with the Lightstone.
+
+http://www.github.com/qdot/liblightstone
+
+== Installation ==
+
+- Put the .mxo(Mac)/.mxe(Windows) or .pd_[platform] file in a
+  directory that Max/Pd will search for externals (Max: Options ->
+  File Preferences -> Other Folders, Pd: Options -> Paths)
+
+- Max: Put the .help (Max4) or .maxhelp (Max5) file in the max-help
+  directory of your Max/MSP installation
+
+== Compilation Instructions ==
+
+Assuming you want to build the external yourself instead of using a
+binary package, it is recommended that you check the flext building
+documentation. However, for a quick overview, you can follow these
+steps:
+
+- Check out flext from the flext repo (listed above). You'll need
+  either the Max SDK or the Pd Source Code in order to compile it.
+
+- Compile flext
+
+- Customize the package.txt file in the directory of the np external
+  you're building. There may be various package_[platform].txt files
+  that have some values already filled in. You will most likely need
+  to customize things like include and link directories though.
+
+- From the np external source directory, run the following command,
+  changing the things in brackets to work with your specific platform
+  and program setup.
+
+-----------------
+[path-to-flext]/build.[sh/bat] [pd/max] [gcc/whatever] build
+-----------------
+
+- Congrats, you should now have the external sitting in a directory
+  relating to your program. Or you could just download the binaries,
+  or email Kyle with a request to build them for you.
+
+== Platform Specifics Issues ==
+
+None currently known
+
+== Licensing ==
+
+np_lightstone is covered under the GPL License due to Flext. If you can
+unwind it from flext somehow, consider it BSD.
+
+=== np_lightstone Copyright ===
+
+-------------------
+np_lightstone, Copyright 2007-2010 Kyle Machulis/Nonpolynomial Labs
+-------------------
+
+=== Flext Copyright and GPL License ===
+
+flext source code are covered under the GPL v2 License. np_lightstone is
+BSD, but since it's based on flext, it's GPL.
+
+-------------------
+flext - C++ layer for Max/MSP and pd (pure data) externals
+Copyright (C) 2001-2005 Thomas Grill
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+ 
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+In the official flext distribution, the GNU General Public License is
+in the file gpl.txt
+--------------------
