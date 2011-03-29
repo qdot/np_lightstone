@@ -1,11 +1,11 @@
 /*
- * Implementation file for Trancevibrator Max/Pd External
+ * Implementation file for Lightstone Max/Pd External
  *
- * Copyright (c) 2005-2008 Kyle Machulis/Nonpolynomial Labs <kyle@nonpolynomial.com>
+ * Copyright (c) 2006-2011 Kyle Machulis/Nonpolynomial Labs <kyle@nonpolynomial.com>
  *
  * More info on Nonpolynomial Labs @ http://www.nonpolynomial.com
  *
- * Sourceforge project @ http://www.sourceforge.net/projects/libtrancevibe/
+ * Sourceforge project @ http://www.github.com/qdot/np_lightstone
  *
  * Example code from flext tutorials. http://www.parasitaere-kapazitaeten.net/ext/flext/
  */
@@ -63,7 +63,7 @@ public:
 		FLEXT_ADDMETHOD_(0, "count", count);
 		FLEXT_ADDMETHOD(0, anything);
 
-		post("Lightstone External v1.0.0");
+		post("Lightstone External v1.5.0");
 		post("by Nonpolynomial Labs (http://www.nonpolynomial.com)");
 		post("Updates at http://www.github.com/qdot/np_lightstone");
 		post("Compiled on " __DATE__ " " __TIME__);

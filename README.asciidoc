@@ -13,7 +13,7 @@ information from the Journey to Wild Divine Lightstone USB Widget.
 
 Source repo @ http://www.github.com/qdot/np_lightstone
 
-Releases @ http://www.sourceforge.net/projects/np-externals
+Releases @ http://www.sourceforge.net/projects/nplabs
 
 All NP Labs Externals @ http://www.nonpolynomial.com/externals
 
@@ -79,20 +79,18 @@ steps:
 === Mac OS X ===
 
 Assuming you have not installed the Journey to Wild Divine software
-and have not installed the dmg version of liblightstone, you will need
+and are not installing the dmg version of liblightstone, you will need
 to install the "Lightstone OS X Extension" in order to use the
-lightstone on OS X. The file and installation instructions are
-available on the liblightstone sourceforge site. 
+lightstone on OS X. 
 
-http://sourceforge.net/projects/liblightstone
-
-Note that there are two different version of the kext, one for 10.4
-and earlier, and the other for 10.5 and later.
+Simply copy the LightstoneNullDriver.kext bundle included with the
+package to the /System/Library/Extensions directory and reboot.
 
 === Linux ===
 
 The lightstone VID/PID pair will need to be blacklisted so that the
-Linux HID manager does not pick them up.
+Linux HID manager does not pick them up. This can be done via udev
+rules, or else you can just run things as root.
 
 === Windows ===
 
@@ -106,7 +104,7 @@ unwind it from flext somehow, consider it BSD.
 === np_lightstone Copyright ===
 
 -------------------
-np_lightstone, Copyright 2007-2010 Kyle Machulis/Nonpolynomial Labs
+np_lightstone, Copyright 2007-2011 Kyle Machulis/Nonpolynomial Labs
 -------------------
 
 === Flext Copyright and GPL License ===
